@@ -40,9 +40,9 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue';
 
-import Logo from "@/components/Logo.vue";
+import Logo from '@/components/Logo.vue';
 
 export default Vue.extend({
   components: {
@@ -53,8 +53,8 @@ export default Vue.extend({
       drawer: false,
       selectedItem: 0,
       links: [
-        { icon: "mdi-archive", text: "Produtos", route: "/products" },
-        { icon: "mdi-bookmark", text: "Categorias", route: "/" },
+        { icon: 'mdi-archive', text: 'Produtos', route: '/products' },
+        { icon: 'mdi-bookmark', text: 'Categorias', route: '/' },
       ],
     };
   },
