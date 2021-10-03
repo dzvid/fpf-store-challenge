@@ -6,6 +6,9 @@ import theme from "@/global/styles/theme";
 Vue.use(Vuetify);
 
 export default new Vuetify({
+  icons: {
+    iconfont: "mdi",
+  },
   theme: {
     themes: {
       light: theme.lightThemeColors,

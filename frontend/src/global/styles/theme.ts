@@ -8,6 +8,6 @@ export default {
     info: "#2196F3",
     warning: "#FF872C",
     surface: "#FFFFFF",
-    background: "#FAFBFD",
+    background: "#F4F4F4",
   },
 };
