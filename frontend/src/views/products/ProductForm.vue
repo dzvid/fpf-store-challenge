@@ -1,115 +1,122 @@
 <template>
   <PageWrapper>
-    <PageHeader class="d-flex flex-row align-center">
+    <PageHeader class="d-flex flex-row align-center justify-center">
       <PageTitle>
         {{ editingProject ? 'Editar produto' : 'Adicionar produto' }}
       </PageTitle>
     </PageHeader>
 
-    <v-card max-width="420">
-      <v-card-text>
-        <v-container fluid>
-          <v-form id="form" ref="form">
-            <v-row align-sm="center" justify-sm="center">
-              <v-col cols="12">
-                <v-text-field
-                  v-model="product.name"
-                  :rules="[(v) => !!v || 'O campo é obrigatório.']"
-                  label="Nome do produto"
-                  type="text"
-                  name="name"
-                  prepend-icon="mdi-tag-outline"
-                  required
-                  outlined
-                  dense
-                  validate-on-blur
-                ></v-text-field>
-              </v-col>
-            </v-row>
+    <div class="d-flex flex-row align-center justify-center">
+      <v-card max-width="420">
+        <v-card-text>
+          <v-container fluid>
+            <v-form id="form" ref="form">
+              <v-row align-sm="center" justify-sm="center">
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="product.name"
+                    :rules="[(v) => !!v || 'O campo é obrigatório.']"
+                    label="Nome do produto"
+                    type="text"
+                    name="name"
+                    prepend-icon="mdi-tag-outline"
+                    required
+                    outlined
+                    dense
+                    validate-on-blur
+                  ></v-text-field>
+                </v-col>
+              </v-row>
 
-            <v-row align-sm="center" justify-sm="center">
-              <v-col cols="12">
-                <v-select
-                  v-model="product.categoryId"
-                  :loading="getCategoriesLoading"
-                  :disabled="getCategoriesLoading"
-                  :items="getCategories"
-                  :item-value="'id'"
-                  :item-text="'name'"
-                  :rules="[(v) => !!v || 'O campo é obrigatório.']"
-                  :label="getCategoriesLoading ? 'Carregando...' : 'Categoria'"
-                  name="category"
-                  prepend-icon="mdi-shape-outline"
-                  required
-                  outlined
-                  dense
-                  validate-on-blur
-                  no-data-text="Não há categorias disponíveis."
-                ></v-select>
-              </v-col>
-            </v-row>
+              <v-row align-sm="center" justify-sm="center">
+                <v-col cols="12">
+                  <v-select
+                    v-model="product.categoryId"
+                    :loading="getCategoriesLoading"
+                    :disabled="getCategoriesLoading"
+                    :items="getCategories"
+                    :item-value="'id'"
+                    :item-text="'name'"
+                    :rules="[(v) => !!v || 'O campo é obrigatório.']"
+                    :label="
+                      getCategoriesLoading ? 'Carregando...' : 'Categoria'
+                    "
+                    name="category"
+                    prepend-icon="mdi-shape-outline"
+                    required
+                    outlined
+                    dense
+                    validate-on-blur
+                    no-data-text="Não há categorias disponíveis."
+                  ></v-select>
+                </v-col>
+              </v-row>
 
-            <v-row align-sm="center" justify-sm="center">
-              <v-col cols="12">
-                <v-text-field
-                  v-model.number="product.price"
-                  :rules="[
-                    (v) => !!v || 'O campo é obrigatório.',
-                    (v) => v > 0 || 'Valor deve ser maior que zero.',
-                  ]"
-                  label="Preço unitário"
-                  prepend-icon="mdi-currency-brl"
-                  type="number"
-                  name="price"
-                  min="0"
-                  required
-                  outlined
-                  dense
-                  validate-on-blur
-                ></v-text-field>
-              </v-col>
-            </v-row>
+              <v-row align-sm="center" justify-sm="center">
+                <v-col cols="12">
+                  <v-text-field
+                    v-model.number="product.price"
+                    :rules="[
+                      (v) => !!v || 'O campo é obrigatório.',
+                      (v) => v > 0 || 'Valor deve ser maior que zero.',
+                    ]"
+                    label="Preço unitário"
+                    prepend-icon="mdi-currency-brl"
+                    type="number"
+                    name="price"
+                    min="0"
+                    required
+                    outlined
+                    dense
+                    validate-on-blur
+                  ></v-text-field>
+                </v-col>
+              </v-row>
 
-            <v-row align-sm="center" justify-sm="center">
-              <v-col cols="12">
-                <v-text-field
-                  v-model.number="product.quantity"
-                  :rules="[
-                    (v) => !!v || 'O campo é obrigatório.',
-                    (v) => v > 0 || 'Valor deve ser maior que zero.',
-                  ]"
-                  label="Quantidade"
-                  prepend-icon="mdi-expand-all"
-                  type="number"
-                  min="0"
-                  step="1"
-                  name="quantity"
-                  required
-                  outlined
-                  dense
-                  validate-on-blur
-                ></v-text-field>
-              </v-col>
-            </v-row>
+              <v-row align-sm="center" justify-sm="center">
+                <v-col cols="12">
+                  <v-text-field
+                    v-model.number="product.quantity"
+                    :rules="[
+                      (v) => !!v || 'O campo é obrigatório.',
+                      (v) => v > 0 || 'Valor deve ser maior que zero.',
+                    ]"
+                    label="Quantidade"
+                    prepend-icon="mdi-expand-all"
+                    type="number"
+                    min="0"
+                    step="1"
+                    name="quantity"
+                    required
+                    outlined
+                    dense
+                    validate-on-blur
+                  ></v-text-field>
+                </v-col>
+              </v-row>
 
-            <v-row>
-              <v-col cols="12" class="mt-4 d-flex justify-center align-center">
-                <v-btn text @click="navigateToProductsList" class="mr-2">
-                  Cancelar
-                </v-btn>
-                <v-btn
-                  type="submit"
-                  form="form"
-                  color="primary"
-                  @click.prevent="submit"
-                  >Salvar</v-btn
+              <v-row>
+                <v-col
+                  cols="12"
+                  class="mt-4 d-flex justify-center align-center"
                 >
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-container>
-      </v-card-text>
-    </v-card>
+                  <v-btn text @click="navigateToProductsList" class="mr-2">
+                    Cancelar
+                  </v-btn>
+                  <v-btn
+                    type="submit"
+                    form="form"
+                    color="primary"
+                    @click.prevent="submit"
+                    >Salvar</v-btn
+                  >
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </div>
   </PageWrapper>
 </template>
 
