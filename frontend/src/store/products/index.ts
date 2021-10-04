@@ -88,7 +88,7 @@ const getters = {
   // Get a Product
   getProductById:
     (state: ProductsState) =>
-    (productId: string): Product | undefined =>
+    (productId: number): Product | undefined =>
       state.products.find((product) => product.id === productId),
 };
 const mutations = {
