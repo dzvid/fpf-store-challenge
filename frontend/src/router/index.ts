@@ -24,6 +24,15 @@ const routes: Array<RouteConfig> = [
       ),
   },
   {
+    path: '/products/edit/:editableProductId',
+    name: 'products.put',
+    component: () =>
+      import(
+        /* webpackChunkName: "edit product" */ '@/views/products/ProductForm.vue'
+      ),
+    props: true,
+  },
+  {
     path: '*',
     redirect: { name: '/products' },
   },

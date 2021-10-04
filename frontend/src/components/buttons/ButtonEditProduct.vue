@@ -1,19 +1,35 @@
 <template>
-  <v-btn small fab text color="primary" @click="onClick">
+  <v-btn
+    small
+    fab
+    text
+    color="primary"
+    @click="navigateToEditProduct(productId)"
+  >
     <v-icon>mdi-pencil-outline</v-icon>
   </v-btn>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'ButtonEditProduct',
   props: {
-    onClick: {
+    productId: {
       required: true,
-      type: Function,
+      type: String,
     },
   },
-};
+  methods: {
+    navigateToEditProduct(productId: string) {
+      this.$router.push({
+        name: 'products.put',
+        params: { editableProductId: productId },
+      });
+    },
+  },
+});
 </script>
 
 <style></style>

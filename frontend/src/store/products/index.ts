@@ -25,6 +25,10 @@ export interface ProductsState {
     loading: boolean;
     error: any;
   };
+  updateProductOperation: {
+    loading: boolean;
+    error: any;
+  };
 }
 
 const namespaced = true;
@@ -42,6 +46,10 @@ const state: ProductsState = {
     error: null,
   },
   createProductOperation: {
+    loading: false,
+    error: null,
+  },
+  updateProductOperation: {
     loading: false,
     error: null,
   },
@@ -70,6 +78,18 @@ const getters = {
     state.createProductOperation.error !== null,
   getCreateProductLoadingError: (state: ProductsState): any =>
     state.createProductOperation.error,
+  // Update a product
+  getUpdateProductLoading: (state: ProductsState): boolean =>
+    state.createProductOperation.loading,
+  getHasUpdateProductLoadingFailed: (state: ProductsState): boolean =>
+    state.createProductOperation.error !== null,
+  getUpdateProductLoadingError: (state: ProductsState): any =>
+    state.createProductOperation.error,
+  // Get a Product
+  getProductById:
+    (state: ProductsState) =>
+    (productId: string): Product | undefined =>
+      state.products.find((product) => product.id === productId),
 };
 const mutations = {
   LOAD_PRODUCTS_PENDING(state: ProductsState): void {
@@ -109,6 +129,18 @@ const mutations = {
     state.createProductOperation.loading = false;
     state.createProductOperation.error = error;
   },
+  UPDATE_PRODUCT_PENDING(state: ProductsState): void {
+    state.updateProductOperation.loading = true;
+    state.updateProductOperation.error = null;
+  },
+  UPDATE_PRODUCT_SUCCESS(state: ProductsState): void {
+    state.updateProductOperation.loading = false;
+    state.updateProductOperation.error = null;
+  },
+  UPDATE_PRODUCT_ERROR(state: ProductsState, error: any): void {
+    state.updateProductOperation.loading = false;
+    state.updateProductOperation.error = error;
+  },
 };
 
 const actions = {
@@ -143,6 +175,17 @@ const actions = {
       context.commit('CREATE_PRODUCT_SUCCESS');
     } catch (error) {
       context.commit('CREATE_PRODUCT_ERROR', error);
+    }
+  },
+  async updateProduct(context: Context, product: Product): Promise<void> {
+    try {
+      context.commit('UPDATE_PRODUCT_PENDING');
+
+      await api.products.updateProduct(product);
+
+      context.commit('UPDATE_PRODUCT_SUCCESS');
+    } catch (error) {
+      context.commit('UPDATE_PRODUCT_ERROR', error);
     }
   },
 };

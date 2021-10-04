@@ -43,7 +43,7 @@
                 </template>
 
                 <template v-slot:item.actions="{ item }">
-                  <ButtonEditProduct class="mr-1" :onClick="() => {}" />
+                  <ButtonEditProduct class="mr-1" :productId="item.id" />
 
                   <ButtonDeleteProduct :product="item" />
                 </template>
@@ -113,7 +113,7 @@ export default Vue.extend({
       },
       {
         text: 'CATEGORIA',
-        value: 'category',
+        value: 'category.name',
         align: 'start',
         sortable: false,
         filterable: false,

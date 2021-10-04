@@ -1,7 +1,9 @@
 <template>
   <PageWrapper>
     <PageHeader class="d-flex flex-row align-center">
-      <PageTitle>Adicionar produto</PageTitle>
+      <PageTitle>
+        {{ editingProject ? 'Editar produto' : 'Adicionar produto' }}
+      </PageTitle>
     </PageHeader>
 
     <v-card max-width="420">
@@ -28,11 +30,11 @@
             <v-row align-sm="center" justify-sm="center">
               <v-col cols="12">
                 <v-select
-                  v-model="product.category"
+                  v-model="product.categoryId"
                   :loading="getCategoriesLoading"
                   :disabled="getCategoriesLoading"
                   :items="getCategories"
-                  :item-value="'name'"
+                  :item-value="'id'"
                   :item-text="'name'"
                   :rules="[(v) => !!v || 'O campo é obrigatório.']"
                   :label="getCategoriesLoading ? 'Carregando...' : 'Categoria'"
@@ -135,10 +137,26 @@ export default Vue.extend({
   },
   async created() {
     await this.fetchCategories();
+
+    if (this.editableProductId) {
+      const product = this.getProductById(this.editableProductId);
+      if (product) {
+        this.product = product;
+      } else {
+        console.warn('Product id not found!');
+        this.navigateToProductsList();
+      }
+    }
   },
   async beforeRouteUpdate(to, from, next) {
     await this.fetchCategories();
     next();
+  },
+  props: {
+    editableProductId: {
+      type: String,
+      default: () => null,
+    },
   },
   data(): Data {
     return {
@@ -156,20 +174,30 @@ export default Vue.extend({
       'getCreateProductLoading',
       'getHasCreateProductLoadingFailed',
       'getCreateProductLoadingError',
+      'getProductById',
     ]),
     form(): VForm {
       return this.$refs.form as VForm;
     },
+    editingProject(): boolean {
+      return this.editableProductId !== null;
+    },
   },
   methods: {
     ...mapActions('categoriesModule', ['fetchCategories']),
-    ...mapActions('productsModule', ['createProduct']),
+    ...mapActions('productsModule', ['createProduct', 'updateProduct']),
     navigateToProductsList() {
       this.$router.push({ name: 'products.get' });
     },
     async submit() {
       if (this.validateForm()) {
-        await this.createProduct(this.product);
+        if (this.editingProject) {
+          console.log('edit product');
+          await this.updateProduct(this.product);
+        } else {
+          console.log('create product');
+          await this.createProduct(this.product);
+        }
 
         if (!this.getHasCreateProductLoadingFailed) {
           this.navigateToProductsList();
