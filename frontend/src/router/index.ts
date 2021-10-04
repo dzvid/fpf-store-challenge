@@ -12,8 +12,20 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/products',
-    name: 'Products',
+    name: 'products.get',
     component: Products,
+  },
+  {
+    path: '/products/create',
+    name: 'products.post',
+    component: () =>
+      import(
+        /* webpackChunkName: "create product" */ '@/views/products/ProductForm.vue'
+      ),
+  },
+  {
+    path: '*',
+    redirect: { name: '/products' },
   },
 ];
 

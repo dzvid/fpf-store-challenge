@@ -23,6 +23,27 @@
       "price": 5000.4,
       "quantity": 2,
       "category": "Celular e Smartphone"
+    },
+    {
+      "name": "Produto de teste",
+      "category": "Informática",
+      "price": 2,
+      "quantity": 2,
+      "id": 4
+    },
+    {
+      "name": "Teste desconecao",
+      "category": "Informática",
+      "price": 231,
+      "quantity": 123,
+      "id": 5
+    },
+    {
+      "name": "Produto",
+      "category": "Material escolar e Papelaria",
+      "price": 123,
+      "quantity": 123,
+      "id": 6
     }
   ],
   "categories": [

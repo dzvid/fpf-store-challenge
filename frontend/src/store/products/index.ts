@@ -21,6 +21,10 @@ export interface ProductsState {
     loading: boolean;
     error: any;
   };
+  createProductOperation: {
+    loading: boolean;
+    error: any;
+  };
 }
 
 const namespaced = true;
@@ -34,6 +38,10 @@ const state: ProductsState = {
     error: null,
   },
   deleteProductOperation: {
+    loading: false,
+    error: null,
+  },
+  createProductOperation: {
     loading: false,
     error: null,
   },
@@ -55,6 +63,13 @@ const getters = {
     state.deleteProductOperation.error !== null,
   getDeleteProductLoadingError: (state: ProductsState): any =>
     state.deleteProductOperation.error,
+  // Create a product
+  getCreateProductLoading: (state: ProductsState): boolean =>
+    state.createProductOperation.loading,
+  getHasCreateProductLoadingFailed: (state: ProductsState): boolean =>
+    state.createProductOperation.error !== null,
+  getCreateProductLoadingError: (state: ProductsState): any =>
+    state.createProductOperation.error,
 };
 const mutations = {
   LOAD_PRODUCTS_PENDING(state: ProductsState): void {
@@ -82,6 +97,18 @@ const mutations = {
     state.deleteProductOperation.loading = false;
     state.deleteProductOperation.error = error;
   },
+  CREATE_PRODUCT_PENDING(state: ProductsState): void {
+    state.createProductOperation.loading = true;
+    state.createProductOperation.error = null;
+  },
+  CREATE_PRODUCT_SUCCESS(state: ProductsState): void {
+    state.createProductOperation.loading = false;
+    state.createProductOperation.error = null;
+  },
+  CREATE_PRODUCT_ERROR(state: ProductsState, error: any): void {
+    state.createProductOperation.loading = false;
+    state.createProductOperation.error = error;
+  },
 };
 
 const actions = {
@@ -105,6 +132,17 @@ const actions = {
       context.commit('DELETE_PRODUCT_SUCCESS');
     } catch (error) {
       context.commit('DELETE_PRODUCT_ERROR', error);
+    }
+  },
+  async createProduct(context: Context, product: Product): Promise<void> {
+    try {
+      context.commit('CREATE_PRODUCT_PENDING');
+
+      await api.products.createProduct(product);
+
+      context.commit('CREATE_PRODUCT_SUCCESS');
+    } catch (error) {
+      context.commit('CREATE_PRODUCT_ERROR', error);
     }
   },
 };

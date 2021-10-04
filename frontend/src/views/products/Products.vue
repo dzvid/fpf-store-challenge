@@ -2,10 +2,7 @@
   <PageWrapper>
     <PageHeader class="d-flex flex-row align-center justify-space-between">
       <PageTitle>Produtos</PageTitle>
-      <v-btn color="primary">
-        <v-icon left>mdi-plus</v-icon>
-        Novo produto
-      </v-btn>
+      <ButtonAddProduct />
     </PageHeader>
 
     <v-card>
@@ -68,6 +65,7 @@ import PageHeader from '@/components/page/PageHeader.vue';
 import PageTitle from '@/components/page/PageTitle.vue';
 import ButtonEditProduct from '@/components/buttons/ButtonEditProduct.vue';
 import ButtonDeleteProduct from '@/components/buttons/ButtonDeleteProduct.vue';
+import ButtonAddProduct from '@/components/buttons/ButtonAddProduct.vue';
 
 export default Vue.extend({
   name: 'Products',
@@ -77,6 +75,7 @@ export default Vue.extend({
     PageHeader,
     ButtonEditProduct,
     ButtonDeleteProduct,
+    ButtonAddProduct,
   },
   computed: {
     ...mapGetters('productsModule', [

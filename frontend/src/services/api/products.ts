@@ -11,9 +11,14 @@ async function deleteProduct(productId: number): Promise<void> {
   return await httpClient.delete(`/products/${productId}`);
 }
 
+async function createProduct(product: Product): Promise<Product> {
+  return await httpClient.post(`/products`, product);
+}
+
 const productsApi = {
   getProducts,
   deleteProduct,
+  createProduct,
 };
 
 export default productsApi;

@@ -13,8 +13,10 @@ type Context = ActionContext<CategoriesState, State>;
 
 export interface CategoriesState {
   categories: Category[];
-  isLoadingCategories: boolean;
-  error: any;
+  getCategoriesOperation: {
+    loading: boolean;
+    error: any;
+  };
 }
 
 const namespaced = true;
@@ -23,38 +25,42 @@ const categories: Category[] = [];
 
 const state: CategoriesState = {
   categories,
-  isLoadingCategories: false,
-  error: null,
+  getCategoriesOperation: {
+    loading: false,
+    error: null,
+  },
 };
 
 const getters = {
   getCategories: (state: CategoriesState): Category[] => state.categories,
   getCategoriesLoading: (state: CategoriesState): boolean =>
-    state.isLoadingCategories,
+    state.getCategoriesOperation.loading,
   getHasCategoriesLoadingFailed: (state: CategoriesState): boolean =>
-    state.error !== null,
-  getCategoryLoadingError: (state: CategoriesState): any => state.error,
+    state.getCategoriesOperation.error !== null,
+  getCategoryLoadingError: (state: CategoriesState): any =>
+    state.getCategoriesOperation.error,
 };
 const mutations = {
   LOAD_CATEGORIES_PENDING(state: CategoriesState): void {
-    state.isLoadingCategories = true;
+    state.getCategoriesOperation.loading = true;
+    state.getCategoriesOperation.error = null;
   },
   LOAD_CATEGORIES_SUCCESS(
     state: CategoriesState,
     categories: Category[]
   ): void {
-    state.isLoadingCategories = false;
-    state.error = null;
+    state.getCategoriesOperation.loading = false;
+    state.getCategoriesOperation.error = null;
     state.categories = categories;
   },
   LOAD_CATEGORIES_ERROR(state: CategoriesState, error: any): void {
-    state.isLoadingCategories = false;
-    state.error = error;
+    state.getCategoriesOperation.loading = false;
+    state.getCategoriesOperation.error = error;
   },
 };
 
 const actions = {
-  async getCategories(context: Context): Promise<void> {
+  async fetchCategories(context: Context): Promise<void> {
     try {
       context.commit('LOAD_CATEGORIES_PENDING');
 

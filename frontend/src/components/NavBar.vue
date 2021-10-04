@@ -52,7 +52,9 @@ export default Vue.extend({
     return {
       drawer: false,
       selectedItem: 0,
-      links: [{ icon: 'mdi-archive', text: 'Produtos', route: '/products' }],
+      links: [
+        { icon: 'mdi-archive-outline', text: 'Produtos', route: '/products' },
+      ],
     };
   },
   methods: {},
