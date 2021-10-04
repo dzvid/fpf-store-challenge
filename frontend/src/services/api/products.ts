@@ -7,8 +7,13 @@ async function getProducts(): Promise<Product[]> {
   return data;
 }
 
+async function deleteProduct(productId: number): Promise<void> {
+  return await httpClient.delete(`/products/${productId}`);
+}
+
 const productsApi = {
   getProducts,
+  deleteProduct,
 };
 
 export default productsApi;

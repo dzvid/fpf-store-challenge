@@ -6,28 +6,46 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title class="text-h6"
-        >Deseja realmente excluir o produto?
+      <v-card-title class="text-body-1"
+        >Confirma a exclusão do produto?
       </v-card-title>
+      <v-card-text>
+        {{ product.name }}
+      </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" text @click="visible = false"> Cancelar </v-btn>
-        <v-btn color="primary" text @click="handleDelete"> Excluir </v-btn>
+        <v-btn
+          color="primary"
+          text
+          @click="visible = false"
+          :disabled="getDeleteProductLoading"
+        >
+          Cancelar
+        </v-btn>
+        <v-btn
+          color="error"
+          text
+          @click="handleDelete"
+          :loading="getDeleteProductLoading"
+        >
+          Excluir
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
-<script>
-import Vue from 'vue';
-import { mapActions } from 'vuex';
+<script lang="ts">
+import Vue, { PropType } from 'vue';
+import { mapActions, mapGetters } from 'vuex';
+import { Product } from '@/models/product';
 
 export default Vue.extend({
   name: 'ButtonDeleteProduct',
   props: {
-    productId: {
+    product: {
       required: true,
-      type: Number,
+      type: Object as PropType<Product>,
     },
   },
   data() {
@@ -35,11 +53,15 @@ export default Vue.extend({
       visible: false,
     };
   },
+  computed: {
+    ...mapGetters('productsModule', ['getDeleteProductLoading']),
+  },
   methods: {
-    // ...mapActions(['deleteProject']),
-    handleDelete() {
-      // this.deleteProject({ id: this.projectId });
-      // this.visible = false;
+    ...mapActions('productsModule', ['deleteProduct', 'fetchProducts']),
+    async handleDelete() {
+      await this.deleteProduct(this.product.id);
+      this.visible = false;
+      await this.fetchProducts();
     },
   },
 });

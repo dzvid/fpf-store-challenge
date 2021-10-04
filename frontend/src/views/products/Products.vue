@@ -48,10 +48,7 @@
                 <template v-slot:item.actions="{ item }">
                   <ButtonEditProduct class="mr-1" :onClick="() => {}" />
 
-                  <ButtonDeleteProduct
-                    :productId="item.id"
-                    :onClick="() => {}"
-                  />
+                  <ButtonDeleteProduct :product="item" />
                 </template>
               </v-data-table>
             </v-col>

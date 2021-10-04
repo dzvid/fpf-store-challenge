@@ -13,8 +13,14 @@ type Context = ActionContext<ProductsState, State>;
 
 export interface ProductsState {
   products: Product[];
-  isLoadingProducts: boolean;
-  error: any;
+  fetchProductsOperation: {
+    loading: boolean;
+    error: any;
+  };
+  deleteProductOperation: {
+    loading: boolean;
+    error: any;
+  };
 }
 
 const namespaced = true;
@@ -23,30 +29,58 @@ const products: Product[] = [];
 
 const state: ProductsState = {
   products,
-  isLoadingProducts: false,
-  error: null,
+  fetchProductsOperation: {
+    loading: false,
+    error: null,
+  },
+  deleteProductOperation: {
+    loading: false,
+    error: null,
+  },
 };
 
 const getters = {
   getProducts: (state: ProductsState): Product[] => state.products,
+  // Fetch products
   getProductsLoading: (state: ProductsState): boolean =>
-    state.isLoadingProducts,
+    state.fetchProductsOperation.loading,
   getHasProductsLoadingFailed: (state: ProductsState): boolean =>
-    state.error !== null,
-  getProductsLoadingError: (state: ProductsState): any => state.error,
+    state.fetchProductsOperation.error !== null,
+  getProductsLoadingError: (state: ProductsState): any =>
+    state.fetchProductsOperation.error,
+  // Delete a product
+  getDeleteProductLoading: (state: ProductsState): boolean =>
+    state.deleteProductOperation.loading,
+  getHasDeleteProductLoadingFailed: (state: ProductsState): boolean =>
+    state.deleteProductOperation.error !== null,
+  getDeleteProductLoadingError: (state: ProductsState): any =>
+    state.deleteProductOperation.error,
 };
 const mutations = {
   LOAD_PRODUCTS_PENDING(state: ProductsState): void {
-    state.isLoadingProducts = true;
+    state.fetchProductsOperation.loading = true;
+    state.fetchProductsOperation.error = null;
   },
   LOAD_PRODUCTS_SUCCESS(state: ProductsState, products: Product[]): void {
-    state.isLoadingProducts = false;
-    state.error = null;
+    state.fetchProductsOperation.loading = false;
+    state.fetchProductsOperation.error = null;
     state.products = products;
   },
   LOAD_PRODUCTS_ERROR(state: ProductsState, error: any): void {
-    state.isLoadingProducts = false;
-    state.error = error;
+    state.fetchProductsOperation.loading = false;
+    state.fetchProductsOperation.error = error;
+  },
+  DELETE_PRODUCT_PENDING(state: ProductsState): void {
+    state.deleteProductOperation.loading = true;
+    state.deleteProductOperation.error = null;
+  },
+  DELETE_PRODUCT_SUCCESS(state: ProductsState): void {
+    state.deleteProductOperation.loading = false;
+    state.deleteProductOperation.error = null;
+  },
+  DELETE_PRODUCT_ERROR(state: ProductsState, error: any): void {
+    state.deleteProductOperation.loading = false;
+    state.deleteProductOperation.error = error;
   },
 };
 
@@ -60,6 +94,17 @@ const actions = {
       context.commit('LOAD_PRODUCTS_SUCCESS', products);
     } catch (error) {
       context.commit('LOAD_PRODUCTS_ERROR', error);
+    }
+  },
+  async deleteProduct(context: Context, productId: number): Promise<void> {
+    try {
+      context.commit('DELETE_PRODUCT_PENDING');
+
+      await api.products.deleteProduct(productId);
+
+      context.commit('DELETE_PRODUCT_SUCCESS');
+    } catch (error) {
+      context.commit('DELETE_PRODUCT_ERROR', error);
     }
   },
 };
