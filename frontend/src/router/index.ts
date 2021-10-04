@@ -1,23 +1,40 @@
-import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
+
+import Products from '@/views/products/Products.vue';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
+    path: '/',
+    redirect: '/products',
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: '/products',
+    name: 'products.get',
+    component: Products,
+  },
+  {
+    path: '/products/create',
+    name: 'products.post',
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+      import(
+        /* webpackChunkName: "create product" */ '@/views/products/ProductForm.vue'
+      ),
+  },
+  {
+    path: '/products/edit/:editableProductId',
+    name: 'products.put',
+    component: () =>
+      import(
+        /* webpackChunkName: "edit product" */ '@/views/products/ProductForm.vue'
+      ),
+    props: true,
+  },
+  {
+    path: '*',
+    redirect: { name: '/products' },
   },
 ];
 
