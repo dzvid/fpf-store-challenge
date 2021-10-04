@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-app-bar flat app color="white">
+    <v-app-bar flat elevation="1" app color="white">
       <v-app-bar-nav-icon
         class="primary--text"
         @click="drawer = !drawer"
@@ -8,7 +8,7 @@
 
       <v-toolbar-title class="black--text">
         <div class="d-flex align-center">
-          <logo class="ma-2" />
+          <Logo class="ma-2" />
           <span class="font-weight-bold">FPF</span>
           <span>&nbsp;</span>
           <span>Store</span>
@@ -52,10 +52,7 @@ export default Vue.extend({
     return {
       drawer: false,
       selectedItem: 0,
-      links: [
-        { icon: 'mdi-archive', text: 'Produtos', route: '/products' },
-        { icon: 'mdi-bookmark', text: 'Categorias', route: '/' },
-      ],
+      links: [{ icon: 'mdi-archive', text: 'Produtos', route: '/products' }],
     };
   },
   methods: {},
