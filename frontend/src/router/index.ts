@@ -30,11 +30,21 @@ const routes: Array<RouteConfig> = [
       import(
         /* webpackChunkName: "edit product" */ '@/views/products/ProductForm.vue'
       ),
-    props: true,
+    props: (route) => {
+      const editableProductId = Number.parseInt(
+        route.params.editableProductId,
+        10
+      );
+
+      if (Number.isNaN(editableProductId)) {
+        return 0;
+      }
+      return { editableProductId };
+    },
   },
   {
     path: '*',
-    redirect: { name: '/products' },
+    redirect: { name: 'products.get' },
   },
 ];
 

@@ -161,7 +161,7 @@ export default Vue.extend({
   },
   props: {
     editableProductId: {
-      type: String,
+      type: Number,
       default: () => null,
     },
   },
@@ -199,10 +199,8 @@ export default Vue.extend({
     async submit() {
       if (this.validateForm()) {
         if (this.editingProject) {
-          console.log('edit product');
           await this.updateProduct(this.product);
         } else {
-          console.log('create product');
           await this.createProduct(this.product);
         }
 

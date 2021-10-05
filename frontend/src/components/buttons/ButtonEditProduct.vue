@@ -18,14 +18,16 @@ export default Vue.extend({
   props: {
     productId: {
       required: true,
-      type: String,
+      type: Number,
     },
   },
   methods: {
-    navigateToEditProduct(productId: string) {
+    navigateToEditProduct(productId: number) {
+      const stringProductId = productId.toString() || '0';
+
       this.$router.push({
         name: 'products.put',
-        params: { editableProductId: productId },
+        params: { editableProductId: stringProductId },
       });
     },
   },
