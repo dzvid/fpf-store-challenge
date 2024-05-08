@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "serve": "node_modules/json-server/lib/cli/bin.js --watch db.json --host localhost -p 3000",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
   "dependencies": {
     "json-server": "^0.16.3"
   }
