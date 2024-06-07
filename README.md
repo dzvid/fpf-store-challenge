@@ -137,7 +137,7 @@ To get a local copy up and running follow these steps:
 Install Git:
 - [git](https://git-scm.com/)
 
-Install NodeJS:
+Install NodeJS v14:
 - [node](https://nodejs.org/en/)
 
 Install a package manager for node:
